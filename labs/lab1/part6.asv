@@ -1,0 +1,50 @@
+%% INFLUENCE OF THE PHASE OF MULTISINE
+
+N = 500;
+K = 60;
+
+% Phases
+rand_phases = 2*pi*rand(1, K);  % Random
+schroeder_phases = []; for k = 1:K, schroeder_phases = [schroeder_phases, (k*(k+1)*pi)/K]; end   % Schroeder
+linear_phases = []; for k = 1:K, linear_phases = [linear_phases, k*pi]; end  % Linear
+cst_phases = ones(1, K);  % Constant
+
+phases = [rand_phases, schroeder_phases, linear_phases, cst_phases];
+
+% Vector of DFT's
+DFT = zeros(4, N);
+% Vector of IDFT's
+IFT = zeros(4, N);
+
+
+for i = 1:4
+    % Construct X_tilde in the frequency domain
+    X_tilde = zeros(1, N); % Initialize frequency domain vector
+    X_tilde(2:K+1) = 0.5 * exp(1j * phases(i)); % Assign non-zero values for 1 <= k <= K
+    
+    % Compute the inverse DFT to get the time domain signal
+    x_n = 2*N*ifft(X_tilde, N); % Compute the inverse FFT
+    
+    DFT(i)
+    IFT = [IFT, x_n];
+end
+
+
+
+% Time domain plot
+    figure;
+    subplot(4,1,i);
+    plot(real(x_n)); % Plot the real part of the time domain signal
+    title('Time Domain');
+    xlabel('Sample Number');
+    ylabel('Amplitude');
+    grid on;
+    
+    % Frequency domain plot
+    figure;
+    stem(n, abs(X_tilde)); % Plot the magnitude of X_tilde
+    title('Frequency Domain');
+    xlabel('Bin Number');
+    ylabel('Magnitude');
+    xlim([0, K+10]); % Limit x-axis to show only relevant bins
+    grid on;

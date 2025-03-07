@@ -1,0 +1,9 @@
+%% PART 3 : TIME DOMAIN CONSTRUCTION OF A MULTISINE
+N = 1000;  % Number of samples
+K = 10  % Number of excited frequencies
+x = 0;  % Time domain signal
+
+for k = 1:K
+    A = 1  % Amplitude of each cosine
+    
+end
